@@ -15,7 +15,7 @@ const server = http.createServer(function (req, res) {
       // Content-Type - 어떤 형식의 데이터인지
       // 정상적으로 요청했을 때 status code 200, JS object구조의 JSON형식의 응답을 보낸다
       res.writeHead(200, { "Content-Type": "application/json" });
-      // JSON.stringify로 JS배열형태를 string 형태으로 바꿔준다
+      // JSON.stringify로 JSnp배열형태를 string 형태으로 바꿔준다
       const products = JSON.stringify([
         {
           name: "농구공",

@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const models = require("./models");
 const port = 8090;
 
 app.use(express.json());
@@ -52,4 +53,14 @@ app.get("/products/:id/events/:eventId", (req, res) => {
 
 app.listen(port, () => {
   console.log("그랩의 쇼핑몰 서버가 실행 중 입니다");
+  models.sequelize
+    .sync()
+    .then(() => {
+      console.log("DB 연결 성공");
+    })
+    .catch((err) => {
+      console.error(err);
+      console.log("DB 연결 에러");
+      process.exit();
+    });
 });

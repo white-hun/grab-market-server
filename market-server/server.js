@@ -21,7 +21,7 @@ app.get("/products", (req, res) => {
     order: [["createdAt", "DESC"]],
     // attribute findALl을 할 때 어떤 column 들을 가져올거냐
     // 설정한 것들 이외에는 가져오지 않겠다(설정한 정보들만 받겠다)
-    attributes: ["id", "name", "price", "seller", "createdAt"],
+    attributes: ["id", "name", "price", "seller", "createdAt", "imageUrl"],
   })
     .then((result) => {
       console.log("PRODUCTS : ", result);

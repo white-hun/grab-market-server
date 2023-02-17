@@ -5,8 +5,22 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const models = require("./models");
+const multer = require("multer");
+// // dest(destination) 다른데서 온 파일 어디에 저장 할지 저장 위치 선언
+// const upload = multer({ dest: "uploads/" });
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, "uploads/");
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.originalname);
+    },
+  }),
+});
 const port = 8090;
 
+// app. - API 생성
 // express에 대해 설정
 // 서버(express)에서 json 형식의 데이터를 처리할 수 있도록 해준다
 app.use(express.json());
@@ -86,6 +100,16 @@ app.get("/products/:id", (req, res) => {
       console.error(error);
       res.send("상품 조회 에러가 발생했습니다.");
     });
+});
+
+// single - 파일 하나만 보냈을 때 처리
+// 파일을 보낼 때 항상 key가 있어야한다
+// image라는 key 가 왔을때 처리하는 구문
+app.post("/image", upload.single("image"), (req, res) => {
+  const file = req.file;
+  res.send({
+    imageUrl: file.path,
+  });
 });
 
 // app.listen을 통해서 서버가 실행

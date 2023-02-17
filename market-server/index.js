@@ -1,3 +1,4 @@
+// 서버 역할을 하도록 도와주는 http 라이브러리
 var http = require("http");
 var hostname = "127.0.0.1";
 var port = 8090;

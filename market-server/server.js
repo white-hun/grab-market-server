@@ -18,6 +18,9 @@ app.get("/products", (req, res) => {
   models.Product.findAll()
     .then((result) => {
       console.log("PRODUCTS : ", result);
+      res.send({
+        products: result,
+      });
     })
     .catch((error) => {
       console.error(error);

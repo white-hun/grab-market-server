@@ -1,5 +1,6 @@
 // 서버 역할을 하도록 도와주는 http 라이브러리
 var http = require("http");
+// 내 컴퓨터 주소
 var hostname = "127.0.0.1";
 var port = 8090;
 
@@ -28,9 +29,11 @@ const server = http.createServer(function (req, res) {
     } else if (method === "POST") {
     }
   }
+  // 요청이 정상적으로 처리되면 서버에 인자를 반환
   res.end("생성되었습니다.");
 });
 
+//listen은 보통 프로그래밍에서 요청을 기다린다 라는 의미이다
 server.listen(port, hostname);
 
 console.log("grab market server on!");

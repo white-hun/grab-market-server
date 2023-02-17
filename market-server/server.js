@@ -15,7 +15,14 @@ app.use(cors());
 
 // 이 경로로(/products)method가 get인 요청이 왔을 때  두번째 인자 arrow function 실행
 app.get("/products", (req, res) => {
-  models.Product.findAll()
+  models.Product.findAll({
+    // order 정렬방식 바꾸고 싶을 때
+    // createdAt 기준으로 DESC(내림차순)
+    order: [["createdAt", "DESC"]],
+    // attribute findALl을 할 때 어떤 column 들을 가져올거냐
+    // 설정한 것들 이외에는 가져오지 않겠다(설정한 정보들만 받겠다)
+    attributes: ["id", "name", "price", "seller", "createdAt"],
+  })
     .then((result) => {
       console.log("PRODUCTS : ", result);
       res.send({
@@ -58,10 +65,27 @@ app.post("/products", (req, res) => {
     });
 });
 
-app.get("/products/:id/events/:eventId", (req, res) => {
+app.get("/products/:id", (req, res) => {
   const params = req.params;
-  const { id, eventId } = params;
-  res.send(`id은 ${id} ${eventId}입니다.`);
+  const { id } = params;
+  // 2개이상의 레코드를 찾고 싶을 때는 findAll, 한개는 findOne
+  models.Product.findOne({
+    // 조건문 where
+    // 받아온 const {id}와 일치하는 정보를 불러와라
+    where: {
+      id: id,
+    },
+  })
+    .then((result) => {
+      console.log("PRODUCT : ", result);
+      res.send({
+        product: result,
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+      res.send("상품 조회 에러가 발생했습니다.");
+    });
 });
 
 // app.listen을 통해서 서버가 실행

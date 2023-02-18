@@ -1,4 +1,4 @@
-// express 라이브러리를 사용한 Node.js로 구축한 서버
+// express 프레임워크를 사용한 Node.js로 구축한 서버
 // common JS 방식
 
 const express = require("express");
@@ -27,7 +27,8 @@ app.use(express.json());
 // 모든 브라우저에서 내가 만든 서버에 요청할 수 있다.
 app.use(cors());
 
-// 이 경로로(/products)method가 get인 요청이 왔을 때  두번째 인자 arrow function 실행
+// 상품정보 API
+// 이 경로로(/products) method가 get인 요청이 왔을 때  두번째 인자 arrow function 실행
 app.get("/products", (req, res) => {
   models.Product.findAll({
     // order 정렬방식 바꾸고 싶을 때
@@ -51,9 +52,8 @@ app.get("/products", (req, res) => {
 
 // body
 
-// body에 데이터를 담는 부분
 // JS에서 객체를 표현할 때 ES6에서는 key와 value가 똑같다면
-// 그때 생략 가능(body: body -> body)
+// 생략 가능(name: name -> body)
 app.post("/products", (req, res) => {
   const body = req.body;
   const { name, price, seller, description } = body;

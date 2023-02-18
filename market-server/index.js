@@ -1,3 +1,5 @@
+// Node.js 만 사용한 간단한서버(Node.js만 사용했을 때 여러 문제들에 직면한다)
+
 // 서버 역할을 하도록 도와주는 http 라이브러리
 var http = require("http");
 // 내 컴퓨터 주소
@@ -17,7 +19,7 @@ const server = http.createServer(function (req, res) {
       // Content-Type - 어떤 형식의 데이터인지
       // 정상적으로 요청했을 때 status code 200, JS object구조의 JSON형식의 응답을 보낸다
       res.writeHead(200, { "Content-Type": "application/json" });
-      // JSON.stringify로 JSnp배열형태를 string 형태으로 바꿔준다
+      // JSON.stringify로 JSON배열형태를 string 형태으로 바꿔준다
       const products = JSON.stringify([
         {
           name: "농구공",

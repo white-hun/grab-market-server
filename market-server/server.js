@@ -1,4 +1,4 @@
-// express
+// express 라이브러리를 사용한 Node.js로 구축한 서버
 // common JS 방식
 
 const express = require("express");

@@ -33,9 +33,10 @@ app.get("/products", (req, res) => {
   models.Product.findAll({
     // order 정렬방식 바꾸고 싶을 때
     // createdAt 기준으로 DESC(내림차순)
-    order: [["createdAt", "DESC"]],
+    // order: [["createdAt", "DESC"]], // ---> 내가 숨긴 코드 <----
     // attribute findALl을 할 때 어떤 column 들을 가져올거냐
-    // 설정한 것들 이외에는 가져오지 않겠다(설정한 정보들만 받겠다)
+    //  ↳ 설정한 것들 이외에는 가져오지 않겠다(설정한 정보들만 받겠다)
+    //  ↳ 필요없는 데이터의 사용을 줄여 트래픽을 줄이고, 보안이 필요한 데이터를 노출할 위험을 방지하기 위해 필요
     attributes: ["id", "name", "price", "seller", "createdAt", "imageUrl"],
   })
     .then((result) => {
@@ -52,6 +53,7 @@ app.get("/products", (req, res) => {
 
 // body
 
+// 상품 생성 API
 // JS에서 객체를 표현할 때 ES6에서는 key와 value가 똑같다면
 // 생략 가능(name: name -> body)
 app.post("/products", (req, res) => {
@@ -79,13 +81,14 @@ app.post("/products", (req, res) => {
     });
 });
 
+// 상품 상세정보 API
 app.get("/products/:id", (req, res) => {
   const params = req.params;
   const { id } = params;
-  // 2개이상의 레코드를 찾고 싶을 때는 findAll, 한개는 findOne
+  // 2개이상의 레코드를 조회할 때는 findAll, 한개는 findOne
   models.Product.findOne({
     // 조건문 where
-    // 받아온 const {id}와 일치하는 정보를 불러와라
+    // column id와 변수 바인딩 id 가 일치하는 id를 불러와라
     where: {
       id: id,
     },
@@ -93,6 +96,8 @@ app.get("/products/:id", (req, res) => {
     .then((result) => {
       console.log("PRODUCT : ", result);
       res.send({
+        // 객체 전달
+        // Product 객체의 product key
         product: result,
       });
     })
@@ -134,3 +139,9 @@ app.listen(port, () => {
       process.exit();
     });
 });
+
+// postman 서버(My Workspace)
+// get product - 메인페이지의 상품 리스트
+// create product - 데이터베이스에 새로운 제품 table 추가
+// get product - 상품 상세 페이지
+// image uplodd - 이미지 url 생성 //--------------------------------주석수정요함

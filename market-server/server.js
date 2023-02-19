@@ -118,7 +118,11 @@ app.listen(port, () => {
   console.log("쇼핑몰 서버가 실행 중 입니다");
   // 실행됬을 때 동기화하는 작업(.sync)
   // (models파일로 생성된 sequrlize(index.js)를 불러온다)
-  // index.js에서 상품과 관련된 테이블을 만들면 데이터베이스에서 상품과 관련되 테이블을 만든다
+  // models에 테이블에 관련된 모델링이 필요한 정보를 넣는다
+  // models/index.js의 정보를 데이터베이스와 동기화 시킨다
+  // ()index.js에서 상품과 관련된 테이블을 만들면 데이터베이스에서 상품과 관련되 테이블을 만든다)
+  // sequelize와 splite를 연동시켜서 sequelize로 명령을 줬을 때 splite로 정보를
+  // promise 구조(then, catch)
   models.sequelize
     .sync()
     .then(() => {

@@ -122,7 +122,7 @@ app.listen(port, () => {
   // models/index.js의 정보를 데이터베이스와 동기화 시킨다
   // ()index.js에서 상품과 관련된 테이블을 만들면 데이터베이스에서 상품과 관련되 테이블을 만든다)
   // sequelize와 splite를 연동시켜서 sequelize로 명령을 줬을 때 splite로 정보를
-  // promise 구조(then, catch)
+  // promise 구조 비동기 처리(then, catch)
   models.sequelize
     .sync()
     .then(() => {

@@ -5,7 +5,7 @@ module.exports = function (sequelize, DataTypes) {
   const product = sequelize.define("Product", {
     name: {
       type: DataTypes.STRING(20), // 글자 길이 제한 20
-      allowNull: false, // 브라우저에서 name column에 데이터를 무조건 작성해야하는 규칙
+      allowNull: false, // name column에 데이터를 무조건 작성해야하는 규칙
     },
     price: {
       type: DataTypes.INTEGER(10),

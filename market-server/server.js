@@ -148,4 +148,4 @@ app.listen(port, () => {
 // get product - 메인페이지의 상품 리스트
 // create product - 데이터베이스에 새로운 제품 table 추가
 // get product - 상품 상세 페이지
-// image uplodd - 이미지 url 생성 //--------------------------------주석수정요함
+// image uplodd - 이미지 url 생성

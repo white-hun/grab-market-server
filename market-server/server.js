@@ -35,6 +35,22 @@ app.use(cors());
 // 두번째 인자인 express.static('uploads') 는 express 프로젝트 내부에 있는 uploads 폴더의 파일들을 제공
 app.use("/uploads", express.static("uploads"));
 
+// banner API
+app.get("/banners", (req, res) => {
+  models.Banner.findAll({
+    limit: 2,
+  })
+    .then((result) => {
+      res.send({
+        banners: result,
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send("에러가 발생했습니다.");
+    });
+});
+
 // 상품정보 API
 // 이 경로로(/products) method가 get인 요청이 왔을 때  두번째 인자 arrow function 실행
 app.get("/products", (req, res) => {

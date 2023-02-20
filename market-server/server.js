@@ -109,10 +109,14 @@ app.get("/products/:id", (req, res) => {
 
 // single - 파일 하나만 보냈을 때 처리
 // 파일을 보낼 때 항상 key가 있어야한다
-// image라는 key 가 왔을때 처리하는 구문
+// image라는 key에 파일이 왔을때 처리하는 구문
+// image 파일을 해당경로(/image)에서 post 요청으로 multipart 폼 형식의 데이터 요청이 왔을 때
+// upload.single을 통해서 uploads라는 폴더에 해당 image가 저장이 된다
 app.post("/image", upload.single("image"), (req, res) => {
+  // req.file에 저장된 이미지 정보를 얻을 수 있다
   const file = req.file;
   res.send({
+    // file의 다양한 정보 중 path를 사용하는데, 이 path가 imageurl이된다
     imageUrl: file.path,
   });
 });

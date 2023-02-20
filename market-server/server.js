@@ -7,7 +7,10 @@ const app = express();
 const models = require("./models");
 const multer = require("multer");
 // // dest(destination) 다른데서 온 파일 어디에 저장 할지 저장 위치 선언
+// // 생성시 파일 이름 데이터가 일반적이지 않음
 // const upload = multer({ dest: "uploads/" });
+
+// 이미지 이름을 url로 사용
 const upload = multer({
   storage: multer.diskStorage({
     destination: function (req, file, cb) {
@@ -21,11 +24,16 @@ const upload = multer({
 const port = 8090;
 
 // app. - API 생성
-// express에 대해 설정
+// express에 대해 설정(get, post 처리할 때 그 위에 설정)
 // 서버(express)에서 json 형식의 데이터를 처리할 수 있도록 해준다
 app.use(express.json());
 // 모든 브라우저에서 내가 만든 서버에 요청할 수 있다.
 app.use(cors());
+// 입력한 경로로 보여주기 위한 설정
+// express 서버에서 클라이언트에게 정적(static)인 데이터(이미지, 비디오 등)를 제공하기 위해서 필요한 코드
+// 첫번째 인자인 '/uploads'는 url뒤에 path를 붙여서 서버URL/uploads/파일명 이렇게 접근하도록 설정
+// 두번째 인자인 express.static('uploads') 는 express 프로젝트 내부에 있는 uploads 폴더의 파일들을 제공
+app.use("/uploads", express.static("uploads"));
 
 // 상품정보 API
 // 이 경로로(/products) method가 get인 요청이 왔을 때  두번째 인자 arrow function 실행
@@ -33,7 +41,7 @@ app.get("/products", (req, res) => {
   models.Product.findAll({
     // order 정렬방식 바꾸고 싶을 때
     // createdAt 기준으로 DESC(내림차순)
-    // order: [["createdAt", "DESC"]], // ---> 내가 숨긴 코드 <----
+    order: [["createdAt", "DESC"]],
     // attribute findALl을 할 때 어떤 column 들을 가져올거냐
     //  ↳ 설정한 것들 이외에는 가져오지 않겠다(설정한 정보들만 받겠다)
     //  ↳ 필요없는 데이터의 사용을 줄여 트래픽을 줄이고, 보안이 필요한 데이터를 노출할 위험을 방지하기 위해 필요
@@ -47,7 +55,7 @@ app.get("/products", (req, res) => {
     })
     .catch((error) => {
       console.error(error);
-      res.send("에러 발생");
+      res.status(400).send("에러 발생");
     });
 });
 
@@ -58,16 +66,18 @@ app.get("/products", (req, res) => {
 // 생략 가능(name: name -> body)
 app.post("/products", (req, res) => {
   const body = req.body;
-  const { name, price, seller, description } = body;
+  const { name, price, seller, description, imageUrl } = body;
   // 방어 코드
-  if (!name || !price || !seller || !description) {
-    res.send("모든 필드를 입력해주세요.");
+  if (!name || !price || !seller || !description || !imageUrl) {
+    // 사용자 에러 코드 400를 넣어준다
+    res.status(400).send("모든 필드를 입력해주세요.");
   }
   models.Product.create({
     name,
     price,
     seller,
     description,
+    imageUrl,
   })
     .then((result) => {
       console.log("상품 생성 결과 : ", result);
@@ -77,7 +87,7 @@ app.post("/products", (req, res) => {
     })
     .catch((error) => {
       console.error(error);
-      res.send("상품 업로드에 문제가 발생했습니다.");
+      res.status(400).send("상품 업로드에 문제가 발생했습니다.");
     });
 });
 
@@ -103,7 +113,7 @@ app.get("/products/:id", (req, res) => {
     })
     .catch((error) => {
       console.error(error);
-      res.send("상품 조회 에러가 발생했습니다.");
+      res.status(400).send("상품 조회 에러가 발생했습니다.");
     });
 });
 

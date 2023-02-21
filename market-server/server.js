@@ -6,17 +6,20 @@ const cors = require("cors");
 const app = express();
 const models = require("./models");
 const multer = require("multer");
-// // dest(destination) 다른데서 온 파일 어디에 저장 할지 저장 위치 선언
-// // 생성시 파일 이름 데이터가 일반적이지 않음
-// const upload = multer({ dest: "uploads/" });
-
-// 이미지 이름을 url로 사용
 const upload = multer({
+  // diskStorage 엔진
+  // 파일을 디스크에 저장하기 위한 모든 제어 기능 제공
   storage: multer.diskStorage({
+    // destination 옵션
+    // 어느 폴더안에 업로드 한 파일을 저장할 지를 결정
     destination: function (req, file, cb) {
+      // uploads 폴더
       cb(null, "uploads/");
     },
+    // filename 옵션
+    // 파일명을 결정
     filename: function (req, file, cb) {
+      // image 파일의 이름
       cb(null, file.originalname);
     },
   }),
@@ -133,9 +136,9 @@ app.get("/products/:id", (req, res) => {
     });
 });
 
+// image라는 key에 파일이 왔을때 처리하는 API
 // single - 파일 하나만 보냈을 때 처리
 // 파일을 보낼 때 항상 key가 있어야한다
-// image라는 key에 파일이 왔을때 처리하는 구문
 // image 파일을 해당경로(/image)에서 post 요청으로 multipart 폼 형식의 데이터 요청이 왔을 때
 // upload.single을 통해서 uploads라는 폴더에 해당 image가 저장이 된다
 app.post("/image", upload.single("image"), (req, res) => {

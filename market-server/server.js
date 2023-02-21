@@ -25,7 +25,7 @@ const port = 8090;
 
 // app. - API 생성
 // express에 대해 설정(get, post 처리할 때 그 위에 설정)
-// 서버(express)에서 json 형식의 데이터를 처리할 수 있도록 해준다
+// 서버(express)에서 json 형식의 데이터를 처리하는 API
 app.use(express.json());
 // 모든 브라우저에서 내가 만든 서버에 요청할 수 있다.
 app.use(cors());

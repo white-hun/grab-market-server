@@ -23,6 +23,16 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING(300),
       allowNull: true,
     },
+    // 결제 여부 column
+    // 1 = true, 0 = false
+    soldout: {
+      type: DataTypes.INTEGER(1),
+      allowNull: false,
+      defaultValue: 0,
+    },
   });
   return product;
 };
+
+// 결제 여부의 판단 같은 경우 true, false로 판단하는데
+// sqlite에서는 boolean형태를 지원하지 않는다

@@ -61,7 +61,7 @@ app.get("/products", (req, res) => {
     // attribute findALl을 할 때 어떤 column 들을 가져올거냐
     //  ↳ 설정한 것들 이외에는 가져오지 않겠다(설정한 정보들만 받겠다)
     //  ↳ 필요없는 데이터의 사용을 줄여 트래픽을 줄이고, 보안이 필요한 데이터를 노출할 위험을 방지하기 위해 필요
-    attributes: ["id", "name", "price", "seller", "createdAt", "imageUrl"],
+    attributes: ["id", "name", "price", "seller", "createdAt", "imageUrl", "soldout"],
   })
     .then((result) => {
       console.log("PRODUCTS : ", result);
@@ -89,11 +89,11 @@ app.post("/products", (req, res) => {
     res.status(400).send("모든 필드를 입력해주세요.");
   }
   models.Product.create({
-    name,
-    price,
-    seller,
-    description,
-    imageUrl,
+    name, // name: name,
+    price, // price: price,
+    seller, // seller: seller,
+    description, // description: description,
+    imageUrl, // imageUrl: imageUrl,
   })
     .then((result) => {
       console.log("상품 생성 결과 : ", result);
@@ -116,7 +116,7 @@ app.get("/products/:id", (req, res) => {
     // 조건문 where
     // column id와 변수 바인딩 id 가 일치하는 id를 불러와라
     where: {
-      id: id,
+      id, // id: id,
     },
   })
     .then((result) => {
@@ -146,6 +146,33 @@ app.post("/image", upload.single("image"), (req, res) => {
     imageUrl: file.path,
   });
 });
+
+// 동적으로 id를 받는다
+app.post("/purchase/:id", (req, res) => {
+  const { id } = req.params;
+  // 어떤 값을 업데이트 시킬지
+  models.Product.update(
+    {
+      soldout: 1,
+    },
+    {
+      where: {
+        id, // id: id,
+      },
+    }
+  )
+    // 업데이트가 됬을 때 result가 true가 되겠다
+    .then((result) => {
+      res.send({
+        result: true,
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send("에러가 발생했습니다.");
+    });
+});
+// 원래 어떤 사용자가 어떤 action을 취했는지에 대한 인증작업이 필요하지만 이 과정에선 생략
 
 // app.listen을 통해서 서버가 실행
 // 정상적으로 실행됬을때 두번째 인자의 callback 함수가 실행
